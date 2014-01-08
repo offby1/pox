@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
+
 """
 This component is for use with the OpenFlow tutorial.
 
@@ -70,12 +72,12 @@ class Tutorial (object):
     """
 
     import pprint
-    print "packet         : ", pprint.pformat (dir(packet))
-    print "packet.src     : ", pprint.pformat (dir(packet.src))
-    print "packet_in      : ", pprint.pformat (dir(packet_in))
-    print "packet_in.data : ", pprint.pformat (dir(packet_in.data))
-    print "-" * 50
-    print
+    print("packet         : ", pprint.pformat (dir(packet)))
+    print("packet.src     : ", pprint.pformat (dir(packet.src)))
+    print("packet_in      : ", pprint.pformat (dir(packet_in)))
+    print("packet_in.data : ", pprint.pformat (dir(packet_in.data)))
+    print("-" * 50)
+    print()
 
     # We want to output to all ports -- we do that using the special
     # OFPP_ALL port as the output port.  (We could have also used
@@ -100,23 +102,30 @@ class Tutorial (object):
 
     if packet.dst in self.mac_to_port:
       # Send packet out the associated port
-      self.resend_packet(packet_in, self.mac_to_port[packet.dst])
+      #self.resend_packet(packet_in, self.mac_to_port[packet.dst])
 
       # Once you have the above working, try pushing a flow entry
       # instead of resending the packet (comment out the above and
       # uncomment and complete the below.)
 
-      log.debug("Installing flow...")
-      # Maybe the log statement should have source/destination/port?
+      log.debug("Installing flow from {} (port {}) to {} (port {})...".format (packet.src,
+                                                                               self.mac_to_port[packet.src],
+                                                                               packet.dst,
+                                                                               self.mac_to_port[packet.dst]))
 
-      #msg = of.ofp_flow_mod()
+      msg = of.ofp_flow_mod()
       #
       ## Set fields to match received packet
-      #msg.match = of.ofp_match.from_packet(packet)
+      msg.match = of.ofp_match.from_packet(packet)
+      msg.match.in_port = self.mac_to_port[packet.src]
+      log.debug("msg.match fields: dl_src %s; dl_dst %s; in_port %s", msg.match.dl_src, msg.match.dl_dst, msg.match.in_port)
       #
       #< Set other fields of flow_mod (timeouts? buffer_id?) >
       #
+      #msg.banner = 'Brought to you by openflow(tm)'
+      msg.actions.append(of.ofp_action_output(port = self.mac_to_port[msg.match.dl_dst]))
       #< Add an output action, and send -- similar to resend_packet() >
+      self.connection.send(msg)
 
     else:
       # Flood the packet out everything but the input port
@@ -138,8 +147,8 @@ class Tutorial (object):
 
     # Comment out the following line and uncomment the one after
     # when starting the exercise.
-    #self.act_like_hub(packet, packet_in)
-    self.act_like_switch(packet, packet_in)
+    self.act_like_hub(packet, packet_in)
+    #self.act_like_switch(packet, packet_in)
 
 
 
