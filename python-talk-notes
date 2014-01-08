@@ -1,0 +1,13 @@
+What features of Python have I used while fumbling with this?
+
+- functions, obviously
+- classes, obviously
+- pprint module
+- dicts
+- if statement
+- comments
+- log module
+- string formatting
+- lists
+
+I note that the whole design of of_tutorial.py is side-effecty, which is a shame.
