@@ -11,3 +11,6 @@ What features of Python have I used while fumbling with this?
 - lists
 
 I note that the whole design of of_tutorial.py is side-effecty, which is a shame.
+
+- Repl!!
+- print with "dir" and "vars" (what's the difference, anyway?)

@@ -25,9 +25,7 @@ It's roughly similar to the one Brandon Heller did for NOX.
 
 from pox.core import core
 import pox.openflow.libopenflow_01 as of
-
 log = core.getLogger()
-
 
 
 class Tutorial (object):
@@ -71,14 +69,6 @@ class Tutorial (object):
     the input port.
     """
 
-    import pprint
-    print("packet         : ", pprint.pformat (dir(packet)))
-    print("packet.src     : ", pprint.pformat (dir(packet.src)))
-    print("packet_in      : ", pprint.pformat (dir(packet_in)))
-    print("packet_in.data : ", pprint.pformat (dir(packet_in.data)))
-    print("-" * 50)
-    print()
-
     # We want to output to all ports -- we do that using the special
     # OFPP_ALL port as the output port.  (We could have also used
     # OFPP_FLOOD.)
@@ -88,51 +78,29 @@ class Tutorial (object):
     # implementation would check that we got the full data before
     # sending it (len(packet_in.data) should be == packet_in.total_len)).
 
-
+
   def act_like_switch (self, packet, packet_in):
     """
     Implement switch-like behavior.
     """
 
-    # Here's some psuedocode to start you off implementing a learning
-    # switch.  You'll need to rewrite it as real Python code.
-
     # Learn the port for the source MAC
     self.mac_to_port[packet.src] = packet_in.in_port
 
-    if packet.dst in self.mac_to_port:
-      # Send packet out the associated port
-      #self.resend_packet(packet_in, self.mac_to_port[packet.dst])
+    # We just learned something new.  Update the switch!!
+    msg = of.ofp_flow_mod()
+    msg.match = of.ofp_match()
+    msg.match.dl_dst = packet.src
+    msg.actions.append(of.ofp_action_output(port = packet_in.in_port))
+    log.debug ("Telling switch: if dst is %s, send 'em to port %s", msg.match.dl_dst, packet_in.in_port)
+    self.connection.send(msg)
 
-      # Once you have the above working, try pushing a flow entry
-      # instead of resending the packet (comment out the above and
-      # uncomment and complete the below.)
+    # Now send the packet itself wherever it needs to go.
+    output_port = self.mac_to_port.get (packet.dst, of.OFPP_ALL)
+    log.info ("Packet for ether %s goes out port %s", packet.dst, output_port)
+    self.resend_packet(packet_in, output_port)
 
-      log.debug("Installing flow from {} (port {}) to {} (port {})...".format (packet.src,
-                                                                               self.mac_to_port[packet.src],
-                                                                               packet.dst,
-                                                                               self.mac_to_port[packet.dst]))
-
-      msg = of.ofp_flow_mod()
-      #
-      ## Set fields to match received packet
-      msg.match = of.ofp_match.from_packet(packet)
-      msg.match.in_port = self.mac_to_port[packet.src]
-      log.debug("msg.match fields: dl_src %s; dl_dst %s; in_port %s", msg.match.dl_src, msg.match.dl_dst, msg.match.in_port)
-      #
-      #< Set other fields of flow_mod (timeouts? buffer_id?) >
-      #
-      #msg.banner = 'Brought to you by openflow(tm)'
-      msg.actions.append(of.ofp_action_output(port = self.mac_to_port[msg.match.dl_dst]))
-      #< Add an output action, and send -- similar to resend_packet() >
-      self.connection.send(msg)
-
-    else:
-      # Flood the packet out everything but the input port
-      # This part looks familiar, right?
-      self.resend_packet(packet_in, of.OFPP_ALL)
-
-
+
   def _handle_PacketIn (self, event):
     """
     Handles packet in messages from the switch.
@@ -147,8 +115,8 @@ class Tutorial (object):
 
     # Comment out the following line and uncomment the one after
     # when starting the exercise.
-    self.act_like_hub(packet, packet_in)
-    #self.act_like_switch(packet, packet_in)
+    #self.act_like_hub(packet, packet_in)
+    self.act_like_switch(packet, packet_in)
 
 
 
