@@ -14,3 +14,7 @@ I note that the whole design of of_tutorial.py is side-effecty, which is a shame
 
 - Repl!!
 - print with "dir" and "vars" (what's the difference, anyway?)
+- modules & imports
+
+https://github.com/mininet/mininet/wiki/Introduction-to-Mininet#useful-background-for-using-mininet
+contains a similar list of concepts.
