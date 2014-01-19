@@ -94,7 +94,7 @@ class Tutorial (object):
 
         # Now send the packet itself wherever it needs to go.
         output_port = self.mac_to_port.get (packet.dst, of.OFPP_ALL)
-    log.debug ("Packet for ether %s goes out port %s", packet.dst, output_port)
+        log.debug ("Packet for ether %s goes out port %s", packet.dst, output_port)
         self.resend_packet(packet_in, output_port)
 
     def _handle_PacketIn (self, event):
