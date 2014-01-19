@@ -1,3 +1,5 @@
+-*-markdown-*-
+
 What features of Python have I used while fumbling with this?
 
 - functions, obviously
@@ -18,6 +20,63 @@ I note that the whole design of of_tutorial.py is side-effecty, which is a shame
 
 https://github.com/mininet/mininet/wiki/Introduction-to-Mininet#useful-background-for-using-mininet
 contains a similar list of concepts.
+
+I have no idea what programming background you have, if any, so I'm
+going to assume that you've done a little programming, in perhaps one language.
+
+And this will be a two-way talk: I'm pretty good at Python, but don't
+know much about networking!  So I'll probably make newbie mistakes
+there.
+
+So ... what is Python, in 30 seconds?
+
+- interpreted, not compiled.  That means that once you've written a
+  program, you can run it by just typing its name; as opposed to Java
+  or C++ etc where you have to either use an IDE, or explicitly run a
+  "compilation" command.
+
+- dynamically-typed, not statically-typed.  That means that you don't
+  have to "declare" variables; you just use them.
+
+- it has a REPL.  You might never use it, but it's handy.
+
+        :) 12:40:54 [erichanchrow@Eric-Hanchrows-MacBook-Pro pox] (carp *+)$ python hello.py
+        Hello #0
+        Hello #1
+        Hello #2
+        Hello #3
+        :) 12:40:56 [erichanchrow@Eric-Hanchrows-MacBook-Pro pox] (carp *+)$ python
+        Python 2.7.6 (default, Nov 23 2013, 15:45:06)
+        [GCC 4.2.1 Compatible Apple LLVM 5.0 (clang-500.2.79)] on darwin
+        Type "help", "copyright", "credits" or "license" for more information.
+        >>> import hello
+        >>> say_hello(3)
+        Traceback (most recent call last):
+          File "<stdin>", line 1, in <module>
+        NameError: name 'say_hello' is not defined
+        >>> hello.say_hello(3)
+        Hello #0
+        Hello #1
+        Hello #2
+        >>> hello.say_hello("what's your name?")
+        Traceback (most recent call last):
+          File "<stdin>", line 1, in <module>
+          File "hello.py", line 9, in say_hello
+            for x in range(times):
+        TypeError: range() integer end argument expected, got str.
+        >>>
+
+So having introduced the language, I'm gonna use it to control a
+"switch" via this library I found called
+[pox](https://github.com/noxrepo/pox).  In fact, I'm simply walking
+through an
+[online tutorial](http://archive.openflow.org/wk/index.php/OpenFlow_Tutorial#Controller_Choice:_POX_.28Python.29).
+
+So in that tutorial, we imagine we've got a software "switch" hooked
+up to a couple of hosts, and we want to use Python to teach it how to
+do its thing on its own.
+
+        ssh 'mininet@192.168.56.101'
 
 Interesting observation:
 
