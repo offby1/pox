@@ -18,3 +18,12 @@ I note that the whole design of of_tutorial.py is side-effecty, which is a shame
 
 https://github.com/mininet/mininet/wiki/Introduction-to-Mininet#useful-background-for-using-mininet
 contains a similar list of concepts.
+
+Interesting observation:
+
+If I start mininet first, _then_ run pox, and then do "iperf", I get
+lousy results: 6 MB/sec, with tons of output from pox.
+
+But if I start pox first, _then_ run mininet, I see a little output
+from pox for a few seconds, which then settles down; if I then run
+"iperf", I see about 600 MB/sec.
