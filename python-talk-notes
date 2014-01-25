@@ -1,26 +1,4 @@
 -*-markdown-*-
-
-What features of Python have I used while fumbling with this?
-
-- functions, obviously
-- classes, obviously
-- pprint module
-- dicts
-- if statement
-- comments
-- log module
-- string formatting
-- lists
-
-I note that the whole design of of_tutorial.py is side-effecty, which is a shame.
-
-- Repl!!
-- print with "dir" and "vars" (what's the difference, anyway?)
-- modules & imports
-
-https://github.com/mininet/mininet/wiki/Introduction-to-Mininet#useful-background-for-using-mininet
-contains a similar list of concepts.
-
 I have no idea what programming background you have, if any, so I'm
 going to assume that you've done a little programming, in perhaps one language.
 
@@ -76,7 +54,7 @@ So in that tutorial, we imagine we've got a software "switch" hooked
 up to a couple of hosts, and we want to use Python to teach it how to
 do its thing on its own.
 
-This is all done with virtual stuff -- there's a program called
+I'm gonna do this all with virtual stuff -- there's a program called
 "mininet" which creates virtual hosts and switches for you, and lets
 you interact with them.  It's a bit complex to set up, but fortunately
 they've created a virtual machine all ready to go.  I've got that
@@ -147,3 +125,25 @@ Thoughts about the code:
 * The flow of control in this tutorial file is confusing.  The file
   defines two objects: a class called `Tutorial`, and a function
   called `launch`.  The latter is magic because the `pox.py` command
+
+What features of Python have I used while fumbling with this?
+
+- functions, obviously
+- classes, obviously
+- pprint module
+- dicts
+- if statement
+- comments
+- log module
+- string formatting
+- lists
+
+I note that the whole design of of_tutorial.py is side-effecty, which is a shame.
+
+- Repl!!
+- print with "dir" and "vars" (what's the difference, anyway?)
+- modules & imports
+
+https://github.com/mininet/mininet/wiki/Introduction-to-Mininet#useful-background-for-using-mininet
+contains a similar list of concepts.
+
